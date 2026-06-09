@@ -1,0 +1,217 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Astro Park</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="login.css" />
+  </head>
+  <body>
+    <header>
+      <span class="logo">Astro Park</span>
+      <nav class="header-right">
+        <a href="#rides">Rides</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <a href="/employee_login.html">Employee Portal</a>
+        <button class="nav-btn" onclick="window.location.href = 'customer_login.html'">Customer Login</button>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-eyebrow"><span class="dot"></span>Feel the Thrill!</div>
+        <h1>WELCOME TO <br><em>ASTRO PARK</em></h1>
+        <p>Heart-pounding rides, cosmic adventures, and memories that last a lifetime. Astro Park is where Houston comes to escape.</p>
+        <div class="hero-buttons">
+          <button onclick="window.location.href ='customer_login.html'">Buy Tickets</button>
+          <button class="outline" onclick="document.getElementById('rides').scrollIntoView({behavior:'smooth'})">Explore Rides ↓</button>
+        </div>
+      </section>
+
+      <div class="stats-bar">
+        <div class="stat-item"><div class="stat-num">20+</div><div class="stat-label">World-Class Rides</div></div>
+        <div class="stat-item"><div class="stat-num">2M+</div><div class="stat-label">Happy Visitors</div></div>
+        <div class="stat-item"><div class="stat-num">365</div><div class="stat-label">Days a Year</div></div>
+        <div class="stat-item"><div class="stat-num">★ 4.9</div><div class="stat-label">Guest Rating</div></div>
+      </div>
+
+      <section class="features" id="rides">
+        <div class="section-header">
+          <div>
+            <div class="section-tag">Our Attractions</div>
+            <div class="section-title">Rides &amp; <br>ADVENTURES</div>
+          </div>
+          <div class="section-sub">From family-friendly spins to white-knuckle drops - there's a thrill with your name on it.</div>
+        </div>
+
+        <div class="rides-grid">
+          <div class="ride-card">
+            <img src="roller_coaster.jpg" alt="Roller Coaster">
+            <div class="ride-tag">Extreme</div>
+            <div class="ride-card-info">
+              <div class="ride-card-name">Roller Coaster</div>
+              <div class="ride-card-meta">85mph · 220 ft drop · Height: 48"</div>
+            </div>
+            <button class="ride-book-btn" onclick="window.location.href='customer_login.html'">Book Now →</button>
+          </div>
+
+          <div class="ride-card">
+            <img src="ferris_wheel.jpg" alt="Ferris Wheel">
+            <div class="ride-card-info">
+              <div class="ride-class-name">Ferris Wheel</div>
+              <div class="ride-card-meta">Scenic · All ages</div>
+            </div>
+            <button class="ride-book-btn" onclick="window.location.href='customer_login.html'">Book Now →</button>
+          </div>
+
+          <div class="ride-card">
+            <img src="bumper_cars.jpg" alt="Bumper Cars">
+            <div class="ride-card-info">
+              <div class="ride-card-name">Bumper Cars</div>
+              <div class="ride-card-meta">Family Fun · All ages</div>
+            </div>
+            <button class="ride-book-btn" onclick="window.location.href='customer_login.html'">Book Now →</button>
+          </div>
+
+          <div class="ride-card">
+            <img src="water_slide.jpg" alt="Water Slide">
+            <div class="ride-card-info">
+              <div class="ride-card-name">Water Slide</div>
+              <div class="ride-card-meta">Water ride · Height: 42"</div>
+            </div>
+            <button class="ride-book-btn" onclick="window.location.href='customer_login.html'">Book Now →</button>
+          </div>
+
+          <div class="ride-card">
+            <img src="haunted_house.jpg" alt="Haunted House">
+            <div class="ride-card-info">
+              <div class="ride-card-name">Haunted House</div>
+              <div class="ride-card-meta">Scare zone · Age 12+</div>
+            </div>
+            <button class="ride-book-btn" onclick="window.location.href='customer_login.html'">Book Now →</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="experience-strip">
+        <div class="exp-card">
+          <img src="gift_shop.jpg" alt="Gift Shop">
+          <div class="exp-overlay">
+            <h3>GIFT SHOP</h3>
+            <p>Take a piece of the magic home.Exclusive Astro Park merchandise, toys, and souvenirs.</p>
+            <div class="exp-link" onclick="window.location.href='customer_login.html'">Shop Now →</div>
+          </div>
+        </div>
+        <div class="exp-card">
+          <img src="family_fun.jpg" alt="Family Fun">
+          <div class="exp-overlay">
+            <h3>FAMILY FUN</h3>
+            <p>Specially designed zones and rides for every age: from toddlers to grandparents.</p>
+            <div class="exp-link" onclick="window.location.href='customer_login.html'">Explore →</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-strip">
+        <div class="gallery-item">
+          <img src="park_life.jpg" alt="Park Life">
+          <div class="gallery-label">Park Life</div>
+        </div>
+
+        <div class="gallery-item">
+          <img src="night lights.jpg" alt="Night Lights">
+          <div class="gallery-label">Night Lights</div>
+        </div>
+
+        <div class="gallery-item">
+          <img src="crowd_energy.jpg" alt="Crowd Energy">
+          <div class="gallery-label">Crowd Energy</div>
+        </div>
+
+        <div class="gallery-item">
+          <img src="food_and_fun.jpg" alt="Food and Fun">
+          <div class="gallery-label">Food &amp; Fun</div>
+        </div>
+
+        <div class="gallery-item">
+          <img src="make_memories.jpg" alt="Make Memories">
+          <div class="gallery-label">Make Memories</div>
+        </div>
+      </div>
+
+      <section class="about" id="about">
+        <div class="login-card">
+          <div class="section-tag">Why Astro Park</div>
+          <h2>THE ASTRO PARK EXPERIENCE</h2>
+          <div class="why-grid">
+            <div class="why-item"><div class="why-icon">🎢</div><div><h4>World-Class Thrills</h4><p>Engineered for maximum excitement, our rides are inspected daily for unforgettable moments.</p></div></div>
+            <div class="why-item"><div class="why-icon">🎟️</div><div><h4>Easy Online Booking</h4><p>Skip the line. Buy tickets online, pick your rides, and show up ready to have the best day of your life.</p></div></div>
+            <div class="why-item"><div class="why-icon">🛡️</div><div><h4>Safety First, Always</h4><p>Every ride passes rigorous safety checks. Our team ensures every guest has a safe and joyful experience.</p></div></div>
+            <div class="why-item"><div class="why-icon">👨‍👩‍👧‍👦</div><div><h4>For Every Family</h4><p>Gentle carousels for little ones, heart-pounding drops for thrill seekers — something for absolutely everyone.</p></div></div>
+            <div class="why-item"><div class="why-icon">🌟</div><div><h4>Rated 4.9 Stars</h4><p>Over 2 million visitors and counting — we earn every star from real guests who keep coming back.</p></div></div>
+            <div class="why-item"><div class="why-icon">🎁</div><div><h4>Gift Shop &amp; Dining</h4><p>Exclusive merchandise and delicious food, our park has everything for a perfect full-day experience.</p></div></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="cta-banner">
+        <div class="cta-content">
+          <h2>READY FOR<br>LIFTOFF?</h2>
+          <p>Create an account today and unlock exclusive deals, early access to new rides, and faster checkout.</p>
+          <div class="cta-buttons">
+            <button onclick="window.location.href='customer_login.html'">Sign In</button>
+            <button class="outline" onclick="window.location.href='create_customer_account.html'">Create Account</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer id="contact">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <span class="logo">ASTRO PARK</span>
+          <p>Houston's premier theme park experience. Open daily 9am–9pm, 365 days a year.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Explore</h4>
+          <a href="#rides">Rides</a>
+          <a href="customer_login.html">Gift Shop</a>
+          <a href="#about">About Us</a>
+        </div>
+        <div class="footer-section">
+          <h4>Account</h4>
+          <a href="customer_login.html">Sign In</a>
+          <a href="create_customer_account.html">Create Account</a>
+          <a href="customer_login.html">My Tickets</a>
+          <a href="customer_login.html">File a complaint</a>
+        </div>
+        <div class="footer-section">
+          <h4>Contact Us</h4>
+          <p>Phone: (123) 456-7890</p>
+          <p>Email: info@astropark.com</p>
+          <p>Houston, TX</p>
+          <p>Open daily 9am-9pm</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Astro Park. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+      async function login(role) {
+        const response = await fetch("/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ role: role }),
+        });
+
+        const data = await response.json();
+        console.log(data);
+        window.location.href = data.redirect;
+      }
+    </script>
+  </body>
+</html>

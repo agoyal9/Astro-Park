@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Customer Complaint Form</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="complaint_form.css" />
+  </head>
+
+  <body>
+    <button
+      class="back-button"
+      onclick="window.location.href = 'customer.html'"
+    >
+      Back
+    </button>
+
+    <main class="page-shell">
+      <section class="complaint-card" aria-labelledby="complaint-heading">
+        <header class="form-header">
+          <h1 id="complaint-heading">Submit a Complaint</h1>
+          <p>Help us improve by sharing your feedback and concerns.</p>
+        </header>
+
+        <form action="/submit-complaint" method="POST" class="complaint-form">
+          <fieldset class="form-section">
+            <div class="form-field">
+              <label for="complaint-reason">Reason for Complaint</label>
+              <select id="complaint-reason" name="reason" required>
+                <option value="" disabled selected>Loading options...</option>
+              </select>
+            </div>
+
+            <div id="other-container" class="form-field">
+              <label for="other-reason">Please Specify</label>
+              <input
+                type="text"
+                id="other-reason"
+                name="other-reason"
+                placeholder="Enter details"
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="complaint-description">Description</label>
+              <textarea
+                id="complaint-description"
+                name="description"
+                placeholder="Please provide a detailed description of your complaint..."
+                required
+              ></textarea>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <div class="form-field">
+              <label>Customer</label>
+              <p id="customer-meta" class="customer-meta">Loading profile...</p>
+            </div>
+
+            <input type="hidden" id="fname" name="fname" />
+            <input type="hidden" id="lname" name="lname" />
+            <input type="hidden" id="email" name="email" />
+
+            <div class="form-row">
+              <div class="form-field">
+                <label for="complaint-date">Date of Incident</label>
+                <input type="date" id="complaint-date" name="date" required />
+              </div>
+            </div>
+          </fieldset>
+
+          <button type="submit" class="submit-btn">Submit Complaint</button>
+        </form>
+      </section>
+    </main>
+
+    <script src="complaint_form.js"></script>
+  </body>
+</html>

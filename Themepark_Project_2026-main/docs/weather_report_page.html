@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Weather Report</title>
+        <link rel="stylesheet" href="login.css" />
+        <style>
+            body {
+                align-items: flex-start;
+                padding: 40px 20px;
+                flex-direction: column;
+                display: flex;
+                min-height: 100vh;
+            }
+
+            .card {
+                background: var(--card);
+                border: 1px solid var(--border);
+                border-radius: 20px;
+                padding: 30px 36px;
+                width: 820px;
+                max-width: 90vw;
+                margin: 0 auto 28px auto;
+            }
+
+            h1 {
+                font-size: 32px;
+                margin-bottom: 6px;
+                color: var(--white);
+                font-weight: 700;
+            }
+
+            .section-title {
+                font-size: 13px;
+                font-weight: 700;
+                color: var(--cyan);
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+                margin: 24px 0 12px 0;
+                padding-bottom: 6px;
+                border-bottom: 1px solid rgba(56, 217, 245, 0.2);
+            }
+
+            .form-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 14px 24px;
+            }
+
+            .form-group {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .radio-group {
+                display: flex;
+                gap: 24px;
+                padding: 10px 0;
+            }
+
+            .radio-group label {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-weight: 400;
+                cursor: pointer;
+                color: var(--white);
+                font-size: 14px;
+            }
+
+            .btn-row {
+                display: flex;
+                gap: 12px;
+                margin-top: 24px;
+                flex-wrap: wrap;
+            }
+
+            button.secondary {
+                background: rgba(255,255,255,0.11);
+                color: var(--cyan);
+                box-shadow: none;
+                transform: none;
+            }
+
+            .status-msg {
+                margin-top: 14px;
+                font-size: 14px;
+                color: var(--muted);
+                font-style: italic;
+            }
+        </style>
+    </head>
+    <body>
+
+        <!--LOG WEATHER FORM-->
+        <div class="card">
+            <h1>Weather Report</h1>
+
+            <div class="section-title">Log Weather</div>
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label for="record_date">Date</label>
+                    <input type="date" id="record_date">
+                </div>
+
+                <div class="form-group">
+                    <label for="condition">Weather Condition</label>
+                    <select id="condition">
+                        <option value="Sunny">Sunny</option>
+                        <option value="Foggy">Foggy</option>
+                        <option value="Light rain">Light Rain</option>
+                        <option value="Heavy rain">Heavy Rain</option>
+                        <option value="Heatwave">Heatwave</option>
+                        <option value="Snowing">Snowing</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Rainout? (Park operations affected)</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="rainout" value="0" checked> No</label>
+                        <label><input type="radio" name="rainout" value="1">Yes</label>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="msg" id="formMsg"></div>
+
+                <div class="btn-row">
+                    <button onclick="submitWeather()">Submit Report</button>
+                    <button class="secondary" onclick="window.location.href='employee.html'">&#8592; Back</button>
+                </div>
+        </div>
+
+        <!--PAST RECORDS-->
+        <div class="card">
+            <div class="section-title">Past Weather Records</div>
+            <button onclick="loadWeatherRecords()">Load Records</button> 
+            <div class="status-msg" id="recordStatus"></div>
+            <div id="weatherTable"></div>
+        </div>
+
+        <script>
+            document.getElementById("record_date").value = new Date().toISOString().split("T")[0];
+
+            async function submitWeather() {
+                const date = document.getElementById("record_date").value;
+                const condition = document.getElementById("condition").value;
+                const rainout = document.querySelector('input[name="rainout"]:checked').value;
+                const msgEl = document.getElementById("formMsg");
+
+                msgEl.className = "msg";
+                msgEl.textContent = "";
+
+                if (!date) {
+                    msgEl.className = "msg error";
+                    msgEl.textContent = "Please select a date.";
+                    return;
+                }
+
+                try {
+                    const res= await fetch("/weather", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({
+                            record_date: date,
+                            condition: condition,
+                            rainout_flag: parseInt(rainout)
+                        })
+                    });
+
+                    if (res.ok) {
+                        msgEl.className = "msg success";
+                        msgEl.textContent = "Weather report submitted successfully";
+                        loadWeatherRecords();
+                    } else {
+                        const err = await res.text;
+                        msgEl.className = 'msg error';
+
+                        if (res.status === 409) {
+                            msgEl.textContent = err.message || "Weather record exists for this date. You cannot enter two records for the same day.";
+                        } else {
+                            msgEl.textContent = errText || "Something went wrong.";
+                        }
+                    }
+                } catch (err) {
+                    msgEl.className = "msg error";
+                    msgEl.textContent = "Failed to connect to server.";
+                }
+            }
+
+            async function loadWeatherRecords() {
+                document.getElementById("recordStatus").textContent = "Loading...";
+                document.getElementById("weatherTable").innerHTML = "";
+                try {
+                    const res = await fetch("/weather");
+                    const data = await res.json();
+                    document.getElementById("recordStatus").textContent = "";
+
+                    if (!data || data.length === 0) {
+                        document.getElementById("weatherTable").innerHTML = "<p style='margin-top:12px;color:#555;'>No records found.</p>";
+                        return;
+                    }
+
+                    const cols = Object.keys(data[0]);
+                    let html = "<table><thead><tr>";
+                    cols.forEach(c => {
+                        let header = c.replace(/_/g, ' ');
+                        if (c === "rainout_flag") header = "Park Operations Affected";
+                        if (c === "record_date") header = "Date";
+                        if (c === "condition") header = "Weather Condition";
+                        html += `<th>${header}</th>`;
+                    });
+                    html += "</tr></thead><tbody>";
+                    data.forEach(row => {
+                        html += "<tr>";
+                        cols.forEach(c => {
+                            let val = row[c];
+                            if (c === "rainout_flag") val = val ? "Yes" : "No";
+                            if (c === "record_date" && val) val = val.split("T")[0];
+                            html += `<td>${val ?? ""}</td>`;
+                        });
+                        html += "</tr>";
+                    });
+                    html += "</tbody></table>";
+                    document.getElementById("weatherTable").innerHTML = html;
+                } catch (err) {
+                    document.getElementById("recordStatus").textContent = "Error loading records.";
+                }
+            }
+        </script>
+
+    </body>
+</html>

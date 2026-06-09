@@ -1,0 +1,140 @@
+@import url('login.css');
+
+body {
+  padding: 80px 22px 40px;
+}
+
+.page-shell {
+  max-width: 1060px;
+  margin: 0 auto;
+}
+
+.ticket-card {
+  background: var(--card);
+  border-radius: 24px;
+  padding: 32px;
+  border: 1px solid var(--border);
+}
+
+.ticket-header {
+  margin-bottom: 24px;
+}
+
+.ticket-header h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 0.5px;
+}
+
+.ticket-header p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px;
+}
+
+.purchase-panel,
+.cart-panel {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  padding: 22px;
+  border: 1px solid var(--border);
+}
+
+.purchase-panel h2,
+.cart-panel h2 {
+  margin: 0 0 18px;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.form-field label {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.primary-btn, .checkout-btn {
+  width: 100%;
+  margin-top: 6px;
+}
+
+#cartList {
+  list-style: none;
+  max-height: 280px;
+  overflow: auto;
+}
+
+#cartList li {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  margin: 0 0 10px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--white);
+}
+
+#cartList li button {
+  width: auto;
+  min-width: 80px;
+  margin: 0;
+  padding: 7px 12px;
+  font-size: 12px;
+}
+
+.total-row {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  color: var(--white);
+}
+
+.total-row strong {
+  color: var(--cyan);
+  font-size: 20px;
+}
+
+.back-button {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  padding: 8px 16px;
+  z-index: 10;
+  font-size: 13px;
+}
+
+@media (max-width: 860px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  body {
+    padding: 76px 12px 20px;
+  }
+}

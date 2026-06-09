@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Ride Management</title>
+    <link rel="stylesheet" href="ride_management.css" />
+  </head>
+  <body>
+    <div class="card">
+      <h1>Ride Management</h1>
+
+      <div class="section-title">Add New Ride</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Ride Name</label>
+          <input type="text" id="add-name" placeholder="Ride Name" />
+        </div>
+        <div class="form-group">
+          <label>Ride Price</label>
+          <input
+            type="number"
+            id="add-price"
+            placeholder="0.00"
+            min="0"
+            step="0.01"
+          />
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="add-status">
+            <option value="0">Active</option>
+            <option value="1">Closed</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="msg" id="addMsg"></div>
+
+      <div class="btn-row" style="margin-top: 20px">
+        <button onclick="addRide()">Add Ride</button>
+        <button
+          class="secondary"
+          onclick="window.location.href = 'employee.html'"
+        >
+          &#8592; Back
+        </button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">Ride List</div>
+
+      <div class="btn-row">
+        <button onclick="loadRides()">&#8635; Refresh</button>
+      </div>
+
+      <div class="search-row">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search by ride name..."
+          oninput="searchRides()"
+        />
+      </div>
+
+      <div class="msg" id="actionMsg"></div>
+      <div class="status-msg" id="status"></div>
+      <div id="ridesTable"></div>
+    </div>
+
+    <script src="ride_management.js"></script>
+  </body>
+</html>

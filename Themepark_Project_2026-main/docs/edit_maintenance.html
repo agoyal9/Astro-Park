@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Edit Maintenance Ticket</title>
+    <link rel="stylesheet" href="edit_maintenance.css" />
+  </head>
+  <body>
+    <div class="maintenance-card">
+      <h1>Edit Maintenance Ticket</h1>
+      <form id="edit_maintenance_form">
+        <input type="hidden" name="ticket_id" id="ticket_id" />
+        <div class="maintenance-details">
+          <div class="selects">
+            <div class="select-label-group">
+              <label for="which-ride">Ride:</label>
+              <select name="ride" id="which-ride" disabled>
+                <option value="1">Roller Coaster</option>
+                <option value="2">Ferris Wheel</option>
+                <option value="3">Haunted House</option>
+                <option value="4">Bumper Cars</option>
+                <option value="5">Water Slide</option>
+              </select>
+            </div>
+            <div class="select-label-group">
+              <label for="maintenance-type">Maintenance Type:</label>
+              <select name="maintenance-type" id="maintenance-type" required>
+                <option value="routine">Routine</option>
+                <option value="monthly deep-dive">Monthly Deep-Dive</option>
+                <option value="emergency stop">Emergency Stop</option>
+                <option value="ride-breakdown">Ride-breakdown</option>
+                <option value="multiple-complaints">Multiple Complaints</option>
+              </select>
+            </div>
+            <div class="select-label-group">
+              <label for="priority">Priority:</label>
+              <select id="priority" name="priority" required>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+              </select>
+            </div>
+            <div class="select-label-group">
+              <label for="status">Status:</label>
+              <select id="status" name="status" required>
+                <option value="open">Open</option>
+                <option value="resolved">Resolved</option>
+              </select>
+            </div>
+          </div>
+          <div class="date-select">
+            <label for="date-opened">Date:</label>
+            <input
+              type="datetime-local"
+              id="date-opened"
+              name="date-opened"
+              readonly
+            />
+          </div>
+        </div>
+        <textarea
+          name="description"
+          id="description"
+          placeholder="Description of maintenance..."
+          required
+        ></textarea>
+        <button type="submit">Update Ticket</button>
+      </form>
+    </div>
+    <script src="edit_maintenance.js"></script>
+  </body>
+</html>

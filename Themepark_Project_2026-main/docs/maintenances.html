@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>View Maintenance Tickets</title>
+    <link rel="stylesheet" href="maintenances.css" />
+  </head>
+  <body>
+    <h1>Maintenance Tickets</h1>
+
+    <div class="toolbar">
+      <label for="sortSelect">Sort By</label>
+      <select id="sortSelect">
+        <option value="recent">Most Recent</option>
+        <option value="priority">Priority</option>
+        <option value="status">Status</option>
+        <option value="type">Type</option>
+      </select>
+
+      <label for="showResolved" class="toggle-label">
+        <input type="checkbox" id="showResolved" />
+        Show Resolved
+      </label>
+    </div>
+
+    <div class="table-container">
+      <table border="1" id="maintenanceTicketsTable">
+        <thead>
+          <tr>
+            <th>Ticket ID</th>
+            <th>Ride Name</th>
+            <th>Employee ID</th>
+            <th>Type</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Description</th>
+            <th>Date Created</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <script src="maintenances.js"></script>
+    <button
+      class="back-button"
+      onclick="window.location.href = 'maintenance_portal.html'"
+    >
+      Back
+    </button>
+  </body>
+</html>

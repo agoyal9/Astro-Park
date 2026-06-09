@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Buy Tickets</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="buy_ticket.css" />
+  </head>
+
+  <body>
+    <button
+      class="back-button"
+      onclick="window.location.href = 'customer.html'"
+    >
+      Return
+    </button>
+
+    <main class="page-shell">
+      <section class="ticket-card" aria-labelledby="buy-ticket-heading">
+        <header class="ticket-header">
+          <h1 id="buy-ticket-heading">Buy Tickets</h1>
+          <p>Choose your ride, pick ticket type, and checkout in one place.</p>
+        </header>
+
+        <div class="content-grid">
+          <section class="purchase-panel" aria-labelledby="add-tickets-heading">
+            <h2 id="add-tickets-heading">Add Tickets</h2>
+
+            <div class="form-field">
+              <label for="rideSelect">Ride</label>
+              <select id="rideSelect" required>
+                <option value="">Loading rides...</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label for="ticketType">Ticket Type</label>
+              <select name="ticket_type" id="ticketType" required>
+                <option value="Adult">Adult</option>
+                <option value="Child">Child</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label for="ticketQuantity">Quantity</label>
+              <input
+                type="number"
+                name="ticket_quantity"
+                id="ticketQuantity"
+                placeholder="Enter quantity"
+                min="1"
+                required
+              />
+            </div>
+
+            <button type="button" class="primary-btn" onclick="addToCart()">
+              Add to Cart
+            </button>
+          </section>
+
+          <section class="cart-panel" aria-labelledby="cart-heading">
+            <h2 id="cart-heading">Your Cart</h2>
+            <ul id="cartList"></ul>
+
+            <div class="total-row">
+              <span>Total</span>
+              <strong>$<span id="totalPrice">0</span></strong>
+            </div>
+
+            <button class="checkout-btn" onclick="checkout()">Checkout</button>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script src="cart.js"></script>
+  </body>
+</html>

@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Theme Park Login | Employee Login</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="employee_login.css" />
+  </head>
+  <body>
+    <main class="account-shell">
+      <section class="account-card" aria-labelledby="login-heading">
+        <div class="account-header">
+          <h1 id="login-heading">Employee Login</h1>
+          <p>Sign in to access employee tools and operational dashboards.</p>
+        </div>
+
+        <form id="employee_login_form" class="login-form">
+          <div class="field-grid">
+            <div class="form-field">
+              <label for="username">Username</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                class="username-textbox"
+                maxlength="30"
+                placeholder="Username"
+                required
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="password-textbox"
+                minlength="8"
+                maxlength="30"
+                placeholder="Password"
+                required
+              />
+            </div>
+          </div>
+
+          <p id="err-msg" class="error-message">Invalid username or password</p>
+
+          <div class="actions-row">
+            <button type="submit" id="login" class="login-button">Login</button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <button class="back-button" onclick="window.location.href = 'login.html'">
+      Back
+    </button>
+
+    <script>
+      document
+        .getElementById("employee_login_form")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const username = document.getElementById("username").value.trim();
+          const password = document.getElementById("password").value.trim();
+          const errMsg = document.getElementById("err-msg");
+          errMsg.style.display = "none";
+
+          try {
+            const response = await fetch("/employee_login", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ username, password }),
+            });
+
+            const data = await response.json();
+            if (data.success) {
+              sessionStorage.setItem("username", data.username);
+              sessionStorage.setItem("employee_id", data.employee_id);
+              sessionStorage.setItem("role_id", data.role_id);
+              sessionStorage.setItem("role_name", data.role_name);
+              window.location.href = data.redirect;
+            } else {
+              errMsg.style.display = "block";
+            }
+          } catch (err) {
+            errMsg.style.display = "block";
+            errMsg.textContent = "Server Error. Please try again later.";
+          }
+        });
+    </script>
+  </body>
+</html>

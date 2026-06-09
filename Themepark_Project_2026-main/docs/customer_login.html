@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Astro Park Login | Customer Login</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="customer_login.css" />
+  </head>
+  <body>
+    <main class="account-shell">
+      <section class="account-card" aria-labelledby="login-heading">
+        <div class="account-main">
+          <div class="account-content">
+            <div class="account-header">
+              <h1 id="login-heading">Customer Login</h1>
+              <p>Sign in to manage tickets, complaints, and park activity.</p>
+            </div>
+
+            <form id="customer_login_form" class="login-form">
+              <div class="field-grid">
+                <div class="form-field">
+                  <label for="username">Username</label>
+                  <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    class="username-textbox"
+                    maxlength="30"
+                    placeholder="Username"
+                    required
+                  />
+                </div>
+
+                <div class="form-field">
+                  <label for="password">Password</label>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    class="password-textbox"
+                    minlength="4"
+                    maxlength="30"
+                    placeholder="Password"
+                    required
+                  />
+                </div>
+              </div>
+
+              <p id="err-msg" class="error-message">
+                Invalid username or password
+              </p>
+
+              <div class="actions-row">
+                <button type="submit" id="login" class="login-button">
+                  Login
+                </button>
+                <a href="create_customer_account.html" class="secondary-link"
+                  >Create Account</a
+                >
+              </div>
+            </form>
+          </div>
+
+          <aside class="account-image" aria-hidden="true"></aside>
+        </div>
+      </section>
+    </main>
+
+    <button class="back-button" onclick="window.location.href = 'login.html'">
+      Back
+    </button>
+
+    <script>
+      document
+        .getElementById("customer_login_form")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const username = document.getElementById("username").value.trim();
+          const password = document.getElementById("password").value.trim();
+          const errMsg = document.getElementById("err-msg");
+          errMsg.style.display = "none";
+
+          try {
+            const response = await fetch("/customer_login", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ username, password }),
+            });
+
+            const data = await response.json();
+            if (data.success) {
+              sessionStorage.setItem("customer_id", data.customer_id);
+              sessionStorage.setItem("username", data.username);
+              sessionStorage.setItem(
+                "customer_first_name",
+                data.first_name || "",
+              );
+              sessionStorage.setItem(
+                "customer_last_name",
+                data.last_name || "",
+              );
+              sessionStorage.setItem(
+                "customer_email_address",
+                data.email_address || data.username || "",
+              );
+              window.location.href = data.redirect;
+            } else {
+              errMsg.style.display = "block";
+            }
+          } catch (err) {
+            errMsg.style.display = "block";
+            errMsg.textContent = "Server Error. Please try again later.";
+          }
+        });
+    </script>
+  </body>
+</html>

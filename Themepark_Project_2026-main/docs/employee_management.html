@@ -1,0 +1,599 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Employee Management</title>
+    <link rel="stylesheet" href="login.css" />
+    <style>
+      body {
+        align-items: flex-start;
+        padding: 40px 20px;
+        flex-direction: column;
+        justify-content: flex-start;
+        min-height: 100vh;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 28px;
+        padding: 40px 50px;
+        width: 1100px;
+        max-width: 90vw;
+        margin: 0 auto 28px auto;
+      }
+
+      h1 {
+        font-size: 32px;
+        margin-bottom: 6px;
+        color: var(--white);
+      }
+
+      .section-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--cyan);
+        margin: 0 0 16px 0;
+        padding-bottom: 6px;
+        border-bottom: 1px solid rgba(56,217,245,0.2);
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px 24px;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      label {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--muted);
+      }
+
+      input,
+      select {
+        padding: 10px 14px;
+        border-radius: 12px;
+        border: 1px solid var(--input-border);
+        font-size: 14px;
+        background: var(--input-bg);
+        color: var(--white);
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      input:focus,
+      select:focus {
+        outline: 2px solid #5f90d8;
+      }
+
+      .btn-row {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .search-row {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .search-row input {
+        padding: 9px 14px;
+        border-radius: 12px;
+        border: none;
+        font-size: 14px;
+        background: rgba(255, 255, 255, 0.65);
+        color: #1f2a37;
+        width: 280px;
+      }
+
+      .search-row input:focus {
+        outline: 2px solid #5f90d8;
+      }
+
+      button.secondary {
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--white);
+        border: 1.5px solid rgba(255, 255, 255, 0.18);
+        box-shadow: none;
+      }
+
+      button.secondary:hover { 
+        background: rgba(255,255,255,0.11);
+        box-shadow: none; 
+        transform: none;
+      }
+
+      button.danger {
+        background: linear-gradient(135deg, #e05252, #b83232);
+        color: white;
+        box-shadow: 0 4px 16px rgba(224,82,82,0.3);
+      }
+
+      button.success {
+        background: linear-gradient(135deg, #38d98a, #20b86a);
+        color: #08080f; 
+        box-shadow: 0 4px 16px rgba(56,217,138,0.3);
+      }
+
+      button.small {
+        padding: 6px 12px;
+        font-size: 12px;
+        margin: 0 2px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+
+      th {
+        background-color: rgba(56,217,245,0.08);
+        color: var(--cyan);
+        border-bottom: 1px solid rgba(56,217,245,0.2);
+        padding: 10px 14px;
+        text-align: left;
+        font-weight: 600;
+      }
+
+      td {
+        padding: 9px 14px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        color: var(--white);
+      }
+
+      .status-msg {
+        font-size: 14px;
+        color: var(--muted);
+        font-style: italic;
+        margin-bottom: 12px;
+      }
+
+      input.inline-edit {
+        padding: 6px 10px;
+        border-radius: 8px;
+        border: 1px solid var(--input-border);
+        font-size: 13px;
+        background: var(--input-bg);
+        color: var(--white);
+        width: 100%;
+      }
+
+      .msg {
+        margin-top: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 10px 14px;
+        border-radius: 10px;
+        display: none;
+      }
+
+      .msg.success {
+        background: rgba(56,217,138,0.12);
+        color: var(--success);
+        display: block;
+        border: 1px solid rgba(56,217,138,0.25);
+      }
+      .msg.error {
+        background: rgba(224,82,82,0.12);
+        color: var(--danger);
+        display: block;
+        border: 1px solid rgba(224,82,82,0.25);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ADD EMPLOYEE FORM -->
+    <div class="card">
+      <h1>Employee Management</h1>
+
+      <div class="section-title">Add New Employee</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" id="add-firstname" placeholder="First Name" />
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" id="add-lastname" placeholder="Last Name" />
+        </div>
+        <div class="form-group">
+          <label>Middle Initial</label>
+          <input type="text" id="add-middle" placeholder="M" maxlength="1" />
+        </div>
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" id="add-username" placeholder="Username" />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="add-password" placeholder="Password" />
+        </div>
+        <div class="form-group">
+          <label>SSN</label>
+          <input
+            type="text"
+            id="add-ssn"
+            placeholder="123456789"
+            maxlength="9"
+          />
+        </div>
+        <div class="form-group">
+          <label>Pay Rate</label>
+          <input
+            type="number"
+            id="add-payrate"
+            placeholder="0.00"
+            min="0"
+            step="0.01"
+          />
+        </div>
+        <div class="form-group">
+          <label>Role</label>
+          <select id="add-role">
+            <option value="">-- No Role --</option>
+            <option value="1">Park Manager</option>
+            <option value="2">Ride Operator</option>
+            <option value="3">Gift Shop Worker</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="msg" id="addMsg"></div>
+
+      <div class="btn-row" style="margin-top: 20px">
+        <button onclick="addEmployee()">Add Employee</button>
+        <button
+          class="secondary"
+          onclick="window.location.href = 'employee.html'"
+        >
+          &#8592; Back
+        </button>
+      </div>
+    </div>
+
+    <!-- EMPLOYEE LIST -->
+    <div class="card">
+      <div class="section-title">Employee List</div>
+
+      <div class="search-row">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search by name..."
+          oninput="searchEmployees()"
+        />
+
+        <select id = "statusFilter" onchange="loadEmployees()">
+          <option value="active">Active</option>
+          <option value="inactive">Deactivated</option>
+          <option value="all">All</option>
+        </select>
+
+        <button onclick="loadEmployees()">&#8635; Refresh</button>
+      </div>
+
+      <div class="msg" id="actionMsg"></div>
+      <div class="status-msg" id="status"></div>
+      <div id="employeeTable"></div>
+    </div>
+
+    <script>
+      let allEmployees = [];
+
+      async function addEmployee() {
+        const first_name = document
+          .getElementById("add-firstname")
+          .value.trim();
+        const last_name = document.getElementById("add-lastname").value.trim();
+        const middle_initial = document
+          .getElementById("add-middle")
+          .value.trim();
+        const username = document.getElementById("add-username").value.trim();
+        const password = document.getElementById("add-password").value.trim();
+        const ssn = document.getElementById("add-ssn").value.trim();
+        const pay_rate = document.getElementById("add-payrate").value;
+        const role_id = document.getElementById("add-role").value;
+        const msgEl = document.getElementById("addMsg");
+
+        msgEl.className = "msg";
+        msgEl.textContent = "";
+
+        if (
+          !first_name ||
+          !last_name ||
+          !username ||
+          !password ||
+          !ssn ||
+          !pay_rate
+        ) {
+          msgEl.className = "msg error";
+          msgEl.textContent = "Please fill in all required fields.";
+          return;
+        }
+
+        if (ssn.length !== 9) {
+          msgEl.className = "msg error";
+          msgEl.textContent = "SSN must be exactly 9 digits.";
+          return;
+        }
+
+        try {
+          const res = await fetch("/employees", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              role_id: sessionStorage.getItem("role_id"),
+            },
+            body: JSON.stringify({
+              first_name,
+              last_name,
+              middle_initial,
+              username,
+              password,
+              ssn,
+              pay_rate,
+              role_id: role_id === "" ? null : parseInt(role_id),
+            }),
+          });
+
+          if (res.ok) {
+            msgEl.className = "msg success";
+            msgEl.textContent = "Employee added successfully.";
+            document.getElementById("add-firstname").value = "";
+            document.getElementById("add-lastname").value = "";
+            document.getElementById("add-middle").value = "";
+            document.getElementById("add-username").value = "";
+            document.getElementById("add-password").value = "";
+            document.getElementById("add-ssn").value = "";
+            document.getElementById("add-payrate").value = "";
+            document.getElementById("add-role").value = "";
+            loadEmployees();
+          } else {
+            const err = await res.text();
+            msgEl.className = "msg error";
+            msgEl.textContent = "Error: " + err;
+          }
+        } catch (err) {
+          msgEl.className = "msg error";
+          msgEl.textContent = "Failed to connect to server.";
+        }
+      }
+
+      async function loadEmployees() {
+        document.getElementById("status").textContent = "Loading...";
+        document.getElementById("employeeTable").innerHTML = "";
+        document.getElementById("actionMsg").className = "msg";
+        document.getElementById("searchInput").value = "";
+        const statusFilter = document.getElementById("statusFilter").value;
+
+        try {
+          const response = await fetch(`/employees?status=${statusFilter}`, {
+            headers: {
+              role_id: sessionStorage.getItem("role_id"),
+            },
+          });
+          const data = await response.json();
+          allEmployees = data;
+
+          document.getElementById("status").textContent = "";
+
+          if (!data || data.length === 0) {
+            document.getElementById("employeeTable").innerHTML =
+              "<p style='color:#555;'>No employees found.</p>";
+            return;
+          }
+
+          renderTable(data);
+        } catch (err) {
+          document.getElementById("status").textContent =
+            "Error loading employees.";
+        }
+      }
+
+      function searchEmployees() {
+        const query = document
+          .getElementById("searchInput")
+          .value.trim()
+          .toLowerCase();
+        if (!query) {
+          renderTable(allEmployees);
+          return;
+        }
+        const filtered = allEmployees.filter((e) => {
+          const fullName = (e.first_name + " " + e.last_name).toLowerCase();
+          return fullName.includes(query);
+        });
+        renderTable(filtered);
+      }
+
+      function renderTable(data) {
+        if (!data || data.length === 0) {
+          document.getElementById("employeeTable").innerHTML =
+            "<p style='color:#555;'>No employees found.</p>";
+          return;
+        }
+
+        let html = "<table><thead><tr>";
+        html += "<th>ID</th>";
+        html += "<th>First Name</th>";
+        html += "<th>Last Name</th>";
+        html += "<th>Role</th>";
+        html += "<th>Username</th>";
+        html += "<th>Pay Rate</th>";
+        html += "<th>Status</th>";
+        html += "<th>Actions</th>";
+        html += "</tr></thead><tbody>";
+
+        data.forEach((e) => {
+          const middleInitial = e.middle_initial ? e.middle_initial + ". " : "";
+          html += `<tr id="erow-${e.employee_id}">`;
+          html += `<td>${e.employee_id}</td>`;
+          html += `<td id = "efirstname-${e.employee_id}">${e.first_name}</td>`;
+          html += `<td id = "elastname-${e.employee_id}">${e.last_name}</td>`;
+          html += `<td id ="erole-${e.employee_id}">${e.role_name || "-"}</td>`;
+          html += `<td id="eusername-${e.employee_id}">${e.username}</td>`;
+          html += `<td id="epay-${e.employee_id}">${e.pay_rate}</td>`;
+          html += `<td style="color:${e.is_active ? "green" : "red"}">
+            ${e.is_active ? "Active" : "Inactive"}
+          </td>`;
+          const actionButtons = 
+            e.is_active == 1
+            ? `
+              <button class="small secondary" onclick="editEmployee(${e.employee_id}, '${e.username}', ${e.pay_rate}, ${e.role_id ?? "null"}, '${e.first_name}', '${e.last_name}')">&#9999;&#65039; Edit</button>
+              <button class="small danger" onclick="deactivateEmployee(${e.employee_id})">Deactivate</button>
+            `
+            : `
+              <button class="small success" onclick="reactivateEmployee(${e.employee_id})">Reactivate</button>
+            `;
+          html += `<td>${actionButtons}</td>`;
+          
+          html += "</tr>";
+        });
+
+        html += "</tbody></table>";
+        document.getElementById("employeeTable").innerHTML = html;
+      }
+
+      function editEmployee(
+        id,
+        username,
+        pay_rate,
+        currentRoleId,
+        firstname,
+        lastname,
+      ) {
+        const roles = [
+          { id: 1, name: "Park Manager" },
+          { id: 2, name: "Ride Operator" },
+          { id: 3, name: "Gift Shop Worker" },
+        ];
+
+        let roleOptions = `<option value="">-- No Role --</option>`;
+        roles.forEach((r) => {
+          const selected = r.id == currentRoleId ? "selected" : "";
+          roleOptions += `<option value="${r.id}" ${selected}>${r.name}</option>`;
+        });
+
+        document.getElementById(`erole-${id}`).innerHTML =
+          `<select class="inline-edit" id="edit-role-${id}">${roleOptions}</select>`;
+        document.getElementById(`eusername-${id}`).innerHTML =
+          `<input class="inline-edit" id="edit-username-${id}" value="${username}">`;
+        document.getElementById(`epay-${id}`).innerHTML =
+          `<input class="inline-edit" type="number" id="edit-pay-${id}" value="${pay_rate}" min="0">`;
+        document.getElementById(`efirstname-${id}`).innerHTML =
+          `<input class="inline-edit" id="edit-firstname-${id}" value="${firstname}">`;
+        document.getElementById(`elastname-${id}`).innerHTML =
+          `<input class="inline-edit" id="edit-lastname-${id}" value="${lastname}">`;
+
+        const actionsTd = document.querySelector(`#erow-${id} td:last-child`);
+        actionsTd.innerHTML = `
+                    <button class="small success" onclick="saveEmployee(${id})">&#10003; Save</button>
+                    <button class="small secondary" onclick="loadEmployees()">&#10005; Cancel</button>
+                `;
+      }
+
+      async function saveEmployee(id) {
+        const role_id = document.getElementById(`edit-role-${id}`).value;
+        const username = document
+          .getElementById(`edit-username-${id}`)
+          .value.trim();
+        const pay_rate = document.getElementById(`edit-pay-${id}`).value;
+        const first_name = document
+          .getElementById(`edit-firstname-${id}`)
+          .value.trim();
+        const last_name = document
+          .getElementById(`edit-lastname-${id}`)
+          .value.trim();
+        const msgEl = document.getElementById("actionMsg");
+
+        if (!username) {
+          msgEl.className = "msg error";
+          msgEl.textContent = "Username cannot be empty.";
+          return;
+        }
+
+        try {
+          const res = await fetch(`/employees/${id}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              role_id: sessionStorage.getItem("role_id"),
+            },
+            body: JSON.stringify({
+              role_id: role_id === "" ? null : parseInt(role_id),
+              username,
+              pay_rate,
+              first_name,
+              last_name,
+            }),
+          });
+
+          if (res.ok) {
+            msgEl.className = "msg success";
+            msgEl.textContent = "Employee updated successfully.";
+            loadEmployees();
+          } else {
+            const err = await res.text();
+            msgEl.className = "msg error";
+            msgEl.textContent = "Error: " + err;
+          }
+        } catch (err) {
+          msgEl.className = "msg error";
+          msgEl.textContent = "Failed to connect to server.";
+        }
+      }
+
+      async function deactivateEmployee(id) {
+        try {
+          const res = await fetch(`/employees/deactivate/${id}`, {
+            method: "PUT",
+            headers: {
+              role_id: sessionStorage.getItem("role_id"),
+            },
+          });
+
+          if (res.ok) {
+            loadEmployees();
+          } else {
+            alert("Failed to deactivate employee");
+          }
+        } catch (err) {
+          alert("Server error");
+        }
+      }
+
+      async function reactivateEmployee(id) {
+        try {
+          const res = await fetch(`/employees/reactivate/${id}`, {
+            method: "PUT",
+            headers: {
+              role_id: sessionStorage.getItem("role_id"),
+            },
+          });
+
+          if (res.ok) {
+            loadEmployees();
+          } else {
+            alert("Failed to reactivate employee");
+          }
+        } catch (err) {
+          alert("Server error");
+        }
+      }
+
+      loadEmployees();
+    </script>
+  </body>
+</html>

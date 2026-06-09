@@ -1,0 +1,126 @@
+@import url('login.css');
+
+body {
+  padding: 80px 20px 40px;
+}
+
+.maintenance-card {
+  width: min(1000px, 100%);
+  margin: 0 auto;
+  padding: 32px 34px 28px;
+  border-radius: 22px;
+  border: 1px solid var(--border);
+  background: var(--card);
+}
+
+h1 {
+  margin: 0 0 22px;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--white);
+}
+
+form {
+  display: grid;
+  grid-template-columns: minmax(290px, 1fr) 1.2fr;
+  grid-template-rows: auto auto;
+  gap: 20px;
+}
+
+.maintenance-details {
+  grid-column: 1;
+  grid-row: 1;
+  padding: 20px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+}
+
+.selects {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.select-label-group,
+.date-select {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.date-select {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--border);
+}
+
+#description {
+  grid-column: 2;
+  grid-row: 1;
+  width: 100%;
+  min-height: 270px;
+  resize: vertical;
+}
+
+form button[type="submit"] {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  justify-self: center;
+  width: auto;
+  min-width: 170px;
+  padding: 11px 24px;
+  margin-top: 4px;
+}
+
+.back-button {
+  width: fit-content;
+  height: auto;
+  padding: 8px 16px;
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 200;
+  font-size: 13px;
+}
+
+@media (max-width: 860px) {
+  .maintenance-card {
+    padding: 22px 18px;
+  }
+
+  h1 {
+    font-size: 30px;
+  }
+
+  form {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+
+  .maintenance-details {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  #description {
+    grid-column: 1;
+    grid-row: 2;
+    min-height: 200px;
+  }
+
+  form button[type="submit"] {
+    grid-column: 1;
+    grid-row: 3;
+  }
+}
+
+@media (max-width: 520px) {
+  body {
+    padding: 72px 10px 16px;
+  }
+
+  h1 {
+    font-size: 26px;
+  }
+}

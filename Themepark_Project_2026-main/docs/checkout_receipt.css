@@ -1,0 +1,105 @@
+@import url('login.css');
+
+body {
+  padding: 80px 22px 40px;
+}
+
+.receipt-shell {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.receipt-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 32px;
+}
+
+.receipt-header h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.receipt-header p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.receipt-section {
+  margin-top: 22px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid var(--border);
+}
+
+.receipt-section h2 {
+  margin: 0 0 14px;
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.receipt-list {
+  list-style: none;
+}
+
+.receipt-list li {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  margin-bottom: 8px;
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 14px;
+  color: var(--white);
+}
+
+.subtotal-line {
+  margin: 14px 0 0;
+  font-weight: 700;
+  color: var(--cyan);
+  font-size: 14px;
+}
+
+.meta-line {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.receipt-footer {
+  margin-top: 22px;
+  border-top: 1px solid var(--border);
+  padding-top: 18px;
+}
+
+.grand-total {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--white);
+}
+
+.grand-total span {
+  color: var(--cyan);
+}
+
+.back-button {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+}
+
+@media (max-width: 640px) {
+  body {
+    padding: 76px 12px 20px;
+  }
+
+  .receipt-card {
+    padding: 22px;
+  }
+}

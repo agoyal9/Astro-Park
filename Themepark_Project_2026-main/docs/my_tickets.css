@@ -1,0 +1,92 @@
+@import url('login.css');
+
+body {
+  padding: 80px 22px 40px;
+}
+
+.ticket-card {
+  background: var(--card);
+  border-radius: 24px;
+  padding: 32px;
+  border: 1px solid var(--border);
+  max-width: 1060px;
+  margin: 0 auto;
+}
+
+.cart-info {
+  margin: 0;
+}
+
+.cart-info h1 {
+  margin: 0 0 20px;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.table-scroll-container {
+  max-height: 448px;
+  overflow-y: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.03);
+}
+
+#ticketsTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: transparent;
+}
+
+#ticketsTable thead {
+  position: sticky;
+  top: 0;
+  background: rgba(8, 8, 15, 0.95);
+  z-index: 5;
+}
+
+#ticketsTable th {
+  border-bottom: 1px solid rgba(56, 217, 245, 0.2);
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--cyan);
+  font-size: 11px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  background: rgba(56, 217, 245, 0.08);
+}
+
+#ticketsTable td {
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding: 12px 16px;
+  color: var(--white);
+  font-size: 14px;
+}
+
+#ticketsTable tr:hover td { background: rgba(56,217,245,0.04); }
+ 
+button {
+  margin-top: 18px; 
+  width: auto; 
+}
+
+@media (max-width: 860px) {
+  .ticket-card {
+    padding: 22px;
+  }
+
+  .cart-info h1 {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 520px) {
+  body {
+    padding: 72px 12px 20px;
+  }
+
+  .cart-info h1 {
+    font-size: 26px;
+  }
+}

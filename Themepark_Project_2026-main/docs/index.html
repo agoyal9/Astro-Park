@@ -1,0 +1,475 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Customer List</title>
+    <link rel="stylesheet" href="login.css" />
+    <style>
+      body {
+        align-items: flex-start;
+        padding: 40px 20px;
+        flex-direction: column;
+        justify-content: flex-start;
+        min-height: 100vh;
+        display: flex;
+      }
+
+      .customer-list-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 30px 36px;
+        width: 1120px;
+        max-width: 96vw;
+        margin: 0 auto;
+      }
+
+      .complaints-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 26px 36px;
+        width: 1120px;
+        max-width: 96vw;
+        margin: 20px auto 0;
+      }
+
+      h1 {
+        font-size: 28px;
+        margin-bottom: 20px;
+        color: var(--white);
+        font-weight: 700;
+      }
+
+      .customer-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .customer-header h1 {
+        margin-bottom: 0;
+      }
+
+      .btn-row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .search-row {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+        overflow-y: auto;
+        max-height: 200px;
+      }
+
+      .customer-table-wrap {
+        overflow-x: auto;
+        overflow-y: auto;
+        max-height: 420px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+      }
+
+      .customer-table-wrap thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+
+      .active-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--white);
+        font-size: 13px;
+        font-weight: 600;
+        user-select: none;
+        cursor: pointer;
+      }
+
+      .active-toggle input {
+        margin: 0;
+        width: 16px;
+        height: 16px;
+        accent-color: var(--cyan);
+        cursor: pointer;
+      }
+
+      #complaintsTable thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+
+      input.inline-edit {
+        padding: 6px 10px;
+        border-radius: 8px;
+        font-size: 13px;
+        background: var(--input-border);
+        color: var(--white);
+        width: 100%;
+      }
+
+      button.secondary {
+        background: rgba(255,255,255,0.06);
+        color: var(--white);
+        border: 1.5px solid rgba(255,255,255,0.18);
+        box-shadow: none;
+      }
+
+      button.secondary:hover {
+        background: rgba(255,255,255,0.11);
+        box-shadow: none;
+        transform: none;
+      }
+
+      button.danger {
+        background: linear-gradient(135deg, #e05252, #b83232);
+        color: white;
+        box-shadow: 0 4px 16px rgba(224,82,82,0.3);
+      }
+
+      button.success {
+        background: linear-gradient(135deg, #38d98a, #20b86a);
+        color: #08080f;
+        box-shadow: 0 4px 16px rgba(56,217,138,0.3);
+      }
+
+      button.small {
+        padding: 6px 12px;
+        font-size: 12px;
+        margin: 0 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="customer-list-card">
+      <div class="customer-header">
+        <h1>Customer List</h1>
+
+        <div class="btn-row">
+          <button onclick="loadCustomers()">&#8635; Refresh</button>
+          <button
+            class="secondary"
+            onclick="window.location.href = 'employee.html'"
+          >
+            &#8592; Back
+          </button>
+        </div>
+      </div>
+
+      <div class="search-row">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search by name..."
+          oninput="searchCustomers()"
+        />
+        <label class="active-toggle" for="activeOnlyToggle">
+          <input
+            type="checkbox"
+            id="activeOnlyToggle"
+            checked
+            onchange="loadCustomers()"
+          />
+          <span>Active customers only</span>
+        </label>
+      </div>
+
+      <div class="msg" id="actionMsg"></div>
+      <div class="status-msg" id="status"></div>
+      <div id="customerTable"></div>
+    </div>
+
+    <div class="complaints-card">
+      <h1>Customer Complaints</h1>
+      <div class="status-msg" id="complaintsStatus"></div>
+      <div class="table-wrap" id="complaintsTable"></div>
+    </div>
+
+    <script>
+      let allCustomers = [];
+
+      async function loadCustomers() {
+        document.getElementById("status").textContent = "Loading...";
+        document.getElementById("customerTable").innerHTML = "";
+        document.getElementById("actionMsg").className = "msg";
+        document.getElementById("searchInput").value = "";
+        const activeOnly = document.getElementById("activeOnlyToggle").checked;
+        try {
+          const response = await fetch(
+            `/customers?activeOnly=${activeOnly ? "1" : "0"}`,
+          );
+          const data = await response.json();
+          allCustomers = data;
+          document.getElementById("status").textContent = "";
+
+          if (!data || data.length === 0) {
+            document.getElementById("customerTable").innerHTML =
+              "<p style='color:#555;'>No customers found.</p>";
+            return;
+          }
+
+          renderTable(data);
+        } catch (err) {
+          document.getElementById("status").textContent =
+            "Error loading customers.";
+        }
+      }
+
+      function searchCustomers() {
+        const query = document
+          .getElementById("searchInput")
+          .value.trim()
+          .toLowerCase();
+        if (!query) {
+          renderTable(allCustomers);
+          return;
+        }
+        const filtered = allCustomers.filter((c) => {
+          const fullName = (c.first_name + " " + c.last_name).toLowerCase();
+          return fullName.includes(query);
+        });
+        renderTable(filtered);
+      }
+
+      function renderTable(data) {
+        if (!data || data.length === 0) {
+          document.getElementById("customerTable").innerHTML =
+            "<p style='color:#555;'>No customers found.</p>";
+          return;
+        }
+
+        let html = "<table><thead><tr>";
+        html += "<th>Customer ID</th>";
+        html += "<th>Full Name</th>";
+        html += "<th>Date of Birth</th>";
+        html += "<th>Phone Number</th>";
+        html += "<th>Email Address</th>";
+        html += "<th>Last Visit</th>";
+        html += "<th>Active</th>";
+        html += "<th>Actions</th>";
+        html += "</tr></thead><tbody>";
+
+        data.forEach((c) => {
+          const middleInitial = c.middle_initial ? c.middle_initial + ". " : "";
+          const fullName = c.first_name + " " + middleInitial + c.last_name;
+          const dob = c.date_of_birth ? c.date_of_birth.split("T")[0] : "";
+          const lastVisit = c.last_visit_date
+            ? c.last_visit_date.split("T")[0]
+            : "No visits yet";
+          html += `<tr id="row-${c.customer_id}">`;
+          html += `<td>${c.customer_id}</td>`;
+          html += `<td>${fullName}</td>`;
+          html += `<td>${dob}</td>`;
+          html += `<td id="phone-${c.customer_id}">${c.phone_number}</td>`;
+          html += `<td id="email-${c.customer_id}">${c.email_address}</td>`;
+          html += `<td>${lastVisit}</td>`;
+          html += `<td>${c.is_active ? "Yes" : "No"}</td>`;
+          html += `<td>
+                        ${
+                          c.is_active
+                            ? `<button class="small secondary" onclick="editCustomer(${c.customer_id}, '${c.phone_number}', '${c.email_address}')">&#9999;&#65039; Edit</button>
+                        <button class="small danger" onclick="deactivateCustomer(${c.customer_id})">Deactivate</button>`
+                            : `<button class="small success" onclick="reactivateCustomer(${c.customer_id})">Reactivate</button>`
+                        }
+                    </td>`;
+          html += "</tr>";
+        });
+
+        html += "</tbody></table>";
+        document.getElementById("customerTable").innerHTML =
+          `<div class=\"customer-table-wrap\">${html}</div>`;
+      }
+
+      function editCustomer(id, phone, email) {
+        document.getElementById(`phone-${id}`).innerHTML =
+          `<input class="inline-edit" id="edit-phone-${id}" value="${phone}">`;
+        document.getElementById(`email-${id}`).innerHTML =
+          `<input class="inline-edit" id="edit-email-${id}" value="${email}">`;
+
+        const actionsTd = document.querySelector(`#row-${id} td:last-child`);
+        actionsTd.innerHTML = `
+                    <button class="small success" onclick="saveCustomer(${id})">&#10003; Save</button>
+                    <button class="small secondary" onclick="loadCustomers()">&#10005; Cancel</button>
+                `;
+      }
+
+      async function saveCustomer(id) {
+        const phone = document.getElementById(`edit-phone-${id}`).value.trim();
+        const email = document.getElementById(`edit-email-${id}`).value.trim();
+        const msgEl = document.getElementById("actionMsg");
+
+        if (phone.length !== 10) {
+          msgEl.className = "msg error";
+          msgEl.textContent = "Phone number must be exactly 10 digits.";
+          return;
+        }
+
+        if (!email) {
+          msgEl.className = "msg error";
+          msgEl.textContent = "Email cannot be empty.";
+          return;
+        }
+
+        try {
+          const res = await fetch(`/customers/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ phone_number: phone, email_address: email }),
+          });
+
+          if (res.ok) {
+            msgEl.className = "msg success";
+            msgEl.textContent = "Customer updated successfully.";
+            loadCustomers();
+          } else {
+            const err = await res.text();
+            msgEl.className = "msg error";
+            msgEl.textContent = "Error: " + err;
+          }
+        } catch (err) {
+          msgEl.className = "msg error";
+          msgEl.textContent = "Failed to connect to server.";
+        }
+      }
+
+      async function deactivateCustomer(id) {
+        if (!confirm("Are you sure you want to deactivate this customer?"))
+          return;
+
+        const msgEl = document.getElementById("actionMsg");
+        try {
+          const res = await fetch(`/customers/${id}/deactivate`, {
+            method: "PATCH",
+          });
+
+          if (res.ok) {
+            msgEl.className = "msg success";
+            msgEl.textContent = "Customer deactivated successfully.";
+            loadCustomers();
+          } else {
+            const err = await res.text();
+            msgEl.className = "msg error";
+            msgEl.textContent = "Error: " + err;
+          }
+        } catch (err) {
+          msgEl.className = "msg error";
+          msgEl.textContent = "Failed to connect to server.";
+        }
+      }
+
+      async function reactivateCustomer(id) {
+        if (!confirm("Reactivate this customer account?")) return;
+
+        const msgEl = document.getElementById("actionMsg");
+        try {
+          const res = await fetch(`/customers/${id}/reactivate`, {
+            method: "PATCH",
+          });
+
+          if (res.ok) {
+            msgEl.className = "msg success";
+            msgEl.textContent = "Customer reactivated successfully.";
+            loadCustomers();
+          } else {
+            const err = await res.text();
+            msgEl.className = "msg error";
+            msgEl.textContent = "Error: " + err;
+          }
+        } catch (err) {
+          msgEl.className = "msg error";
+          msgEl.textContent = "Failed to connect to server.";
+        }
+      }
+
+      async function loadComplaints() {
+        const statusEl = document.getElementById("complaintsStatus");
+        const tableEl = document.getElementById("complaintsTable");
+
+        statusEl.textContent = "Loading complaints...";
+        tableEl.innerHTML = "";
+
+        try {
+          const complaintsResponse = await fetch("/complaints");
+          const complaintsData = await complaintsResponse.json();
+
+          const ridesResponse = await fetch("/rides");
+          const ridesData = await ridesResponse.json();
+
+          const rideMap = {};
+          ridesData.forEach((ride) => {
+            rideMap[ride.ride_id] = ride.ride_name;
+          });
+
+          statusEl.textContent = "";
+
+          if (!complaintsData || complaintsData.length === 0) {
+            tableEl.innerHTML =
+              "<p style='color:#555;'>No complaints found.</p>";
+            return;
+          }
+
+          let html = "<table><thead><tr>";
+          html += "<th>Name</th>";
+          html += "<th>Email</th>";
+          html += "<th>Type</th>";
+          html += "<th>Other Reason</th>";
+          html += "<th>Description</th>";
+          html += "<th>Incident Date</th>";
+          html += "</tr></thead><tbody>";
+
+          complaintsData.forEach((c) => {
+            const fullName =
+              `${c.first_name || ""} ${c.last_name || ""}`.trim();
+            const incidentDate = c.incident_date
+              ? c.incident_date.split("T")[0]
+              : "";
+
+            let complaintType = c.complaint_type || "";
+            if (!isNaN(complaintType) && complaintType !== "") {
+              complaintType =
+                rideMap[complaintType] || `Ride #${complaintType}`;
+            } else if (complaintType === "giftshop") {
+              complaintType = "Gift Shop";
+            } else if (complaintType) {
+              complaintType =
+                complaintType.charAt(0).toUpperCase() + complaintType.slice(1);
+            }
+
+            html += "<tr>";
+            html += `<td>${fullName}</td>`;
+            html += `<td>${c.email || ""}</td>`;
+            html += `<td>${complaintType}</td>`;
+            html += `<td>${c.reason_if_other || "-"}</td>`;
+            html += `<td>${c.complaint_description || ""}</td>`;
+            html += `<td>${incidentDate}</td>`;
+            html += "</tr>";
+          });
+
+          html += "</tbody></table>";
+          tableEl.innerHTML = html;
+        } catch (err) {
+          statusEl.textContent = "Error loading complaints.";
+        }
+      }
+
+      loadCustomers();
+      loadComplaints();
+    </script>
+  </body>
+</html>

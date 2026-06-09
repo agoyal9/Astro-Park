@@ -1,0 +1,148 @@
+@import url('login.css');
+
+body {
+  padding: 80px 22px 40px;
+}
+
+.page-shell {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.complaint-card {
+  background: var(--card);
+  border-radius: 24px;
+  padding: 32px;
+  border: 1px solid var(--border);
+}
+
+.form-header {
+  margin-bottom: 24px;
+}
+
+.form-header h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.form-header p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.complaint-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.form-section {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid var(--border);
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.form-field:last-child {
+  margin-bottom: 0;
+}
+
+.form-field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.customer-meta {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+select,
+input,
+textarea {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--input-border);
+  box-sizing: border-box;
+  padding: 11px 12px;
+  font-size: 15px;
+  background: var(--input-bg);
+  color: var(--white);
+  font-family: sans-serif;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 140px;
+  line-height: 1.5;
+}
+
+select:focus,
+input:focus,
+textarea:focus {
+  outline: 2px solid rgba(95, 144, 216, 0.35);
+  border-color: rgba(56, 217, 245, 0.5);
+  box-shadow: 0 0 0 3px var(--input-focus);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+#other-container {
+  display: none;
+}
+
+.submit-btn {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.back-button {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+}
+
+@media (max-width: 640px) {
+  body {
+    padding: 76px 12px 20px;
+  }
+
+  .complaint-card {
+    padding: 22px;
+  }
+
+  .form-header h1 {
+    font-size: 26px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-section {
+    padding: 14px;
+  }
+}

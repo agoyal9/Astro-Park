@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+  <head>
+    <title>My Tickets</title>
+    <link rel="stylesheet" href="my_tickets.css" />
+  </head>
+  <body>
+    <div class="ticket-card">
+      <div class="cart-info">
+        <h1>My Purchased Tickets</h1>
+
+        <div class="table-scroll-container">
+          <table border="1" cellpadding="10" id="ticketsTable">
+            <thead>
+              <tr>
+                <th>Ticket ID</th>
+                <th>Ride</th>
+                <th>Ticket Type</th>
+                <th>Visit Date</th>
+                <th>Expiration Date</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <br />
+        <button onclick="window.location.href = 'customer.html'">Return</button>
+      </div>
+    </div>
+
+    <script>
+      async function loadTickets() {
+        const customer_id = sessionStorage.getItem("customer_id");
+
+        if (!customer_id) {
+          alert("You must be logged in.");
+          window.location.href = "customer_login.html";
+          return;
+        }
+
+        try {
+          const response = await fetch(`/my-tickets/${customer_id}`);
+
+          if (!response.ok) {
+            throw new Error("Failed to load tickets.");
+          }
+
+          const tickets = await response.json();
+          const tbody = document.querySelector("#ticketsTable tbody");
+          tbody.innerHTML = "";
+
+          if (tickets.length === 0) {
+            tbody.innerHTML = `
+                        <tr>
+                            <td colspan="5">No tickets purchased yet.</td>
+                        </tr>
+                    `;
+            return;
+          }
+
+          tickets.forEach((ticket) => {
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                        <td>${ticket.ticket_id}</td>
+                        <td>${ticket.ride_name || ticket.ride}</td>
+                        <td>${ticket.ticket_type || "Not recorded"}</td>
+                        <td>${new Date(ticket.visiting_date).toLocaleDateString()}</td>
+                        <td>${new Date(ticket.expiration_date).toLocaleDateString()}</td>
+                        <td>${ticket.ticket_price != null ? `$${Number(ticket.ticket_price).toFixed(2)}` : "Not recorded"}</td>
+                    `;
+
+            tbody.appendChild(row);
+          });
+        } catch (err) {
+          console.error("Error:", err);
+          alert("Could not load tickets.");
+        }
+      }
+
+      loadTickets();
+    </script>
+  </body>
+</html>

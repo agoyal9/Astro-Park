@@ -1,0 +1,480 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Park Statistics</title>
+    <link rel="stylesheet" href="login.css" />
+    <style>
+      body {
+        display: flex;
+        flex-direction: row;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 220px;
+        background: rgba(255, 255, 255, 0.03);
+        border-right: 1px solid var(--border);
+        padding: 32px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-height: 100%;
+      }
+
+      .sidebar h2 {
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--cyan);
+        margin: 0 0 16px 9px;
+      }
+
+      .sidebar .nav-btn {
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding: 10px 14px;
+        background: transparent;
+        border: none;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--muted);
+        cursor: pointer;
+        border-radius: 10px;
+        box-shadow: none;
+        margin: 0;
+        transition: background 0.2s color 0.2s;
+      }
+
+      .sidebar .nav-btn:hover {
+        background: rgba(56, 217, 245,0.08);
+        color: var(--white);
+        transform: none;
+        box-shadow: none;
+      }
+
+      .sidebar .nav-btn.active {
+        background: rgba(56,217,245,0.12);
+        color: var(--cyan);
+        border: 1px solid rgba(56,217,245,0.2);
+      }
+
+      .sidebar .back-nav {
+        margin-top: auto;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .main {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+      }
+
+      .main h1 {
+        font-size: 32px;
+        font-weight: 700;
+        background: linear-gradient(90deg, var(--cyan), var(--gold));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin: 0 0 8px;
+      }
+
+      .main > p {
+        color: var(--muted);
+        font-size: 14px;
+        margin: 0 0 32px;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 14px;
+        margin-bottom: 32px;
+      }
+
+      .stat-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 20px 22px;
+        transition: border-color 0.2s;
+      }
+
+      .stat-card:hover {
+        border-color: rgba(56,217,245,0.25);
+      }
+
+      .stat-card .stat-label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+
+      .stat-card .stat-value {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--white);
+      }
+
+      .section { display: none; }
+      .section.active { display: block; }
+
+      .section h3 {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--white);
+        margin: 0 0 20px;
+      }
+
+      .filter-bar {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+        align-items: flex-end;
+      }
+
+      .print-btn {
+        display: none;
+        margin-top: 16px;
+      }
+
+      .print-btn button {
+        background: rgba(255,255,255,0.06);
+        color: var(--muted);
+        border: 1px solid var(--border);
+        box-shadow: none;
+        font-size: 13px;
+        padding: 8px 18px;
+      }
+
+      .print-btn button:hover {
+        color: var(--white);
+        border-color: rgba(255,255,255,0.2);
+        transform: none;
+        box-shadow: none;
+      }
+
+      .table-wrap {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+      }
+
+      .table-wrap table {
+        border-radius: 0;
+      }
+
+      @media (max-width: 768px) {
+        .page-layout { flex-direction: column; }
+        .sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; padding: 16px; min-height: unset; border-right: none; border-bottom: 1px solid var(--border); }
+        .sidebar h2 { width: 100%; margin-bottom: 8px; }
+        .sidebar .back-nav { margin-top: 0; }
+        .main { padding: 24px 16px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sidebar">
+      <h2>Park Dashboard</h2>
+
+      <button class="nav-btn" onclick="showSection('revenue')">Revenue</button>
+      <button class="nav-btn" onclick="showSection('tickets')">Tickets</button>
+      <button class="nav-btn" onclick="showSection('customers')">
+        Customers
+      </button>
+      <button class="nav-btn" onclick="showSection('rides')">Top Rides</button>
+      <button class="nav-btn" onclick="window.location.href = 'employee.html'">
+        &#8592; Back
+      </button>
+    </div>
+
+    <div class="main">
+      <h1>Statistics Overview</h1>
+      <div class="stats">
+        <div class="card">Revenue<br /><b id="revenueValue">--</b></div>
+        <div class="card">Popular Ride<br /><b id="topRide">--</b></div>
+        <div class="card">New Customers<br /><b id="newCustomers">--</b></div>
+        <div class="card">Tickets Sold<br /><b id="ticketsCount">--</b></div>
+      </div>
+
+      <!-- REPORT 1: Total Revenue -->
+      <div id="revenue" class="section active">
+        <h3>Revenue Overview</h3>
+
+        <div class="filter-bar">
+          <input type="date" id="from1" />
+          <input type="date" id="to1" />
+          <button onclick="loadReport('revenue')">Load</button>
+        </div>
+
+        <div class="msg" id="msg1"></div>
+        <div class="status" id="status1"></div>
+        <div id="revenueTable"></div>
+
+        <div class="print-btn" id="print1">
+          <button class="secondary" onclick="printTable('revenueTable')">
+            Print /Save as PDF
+          </button>
+        </div>
+      </div>
+
+      <!-- Report 2: Tickets Overview-->
+      <div id="tickets" class="section">
+        <h3>Tickets Overview</h3>
+
+        <div class="filter-bar">
+          <input type="date" id="from2" />
+          <input type="date" id="to2" />
+          <button onclick="loadReport('tickets')">Load</button>
+        </div>
+
+        <div class="msg" id="msg2"></div>
+        <div class="status" id="status2"></div>
+        <div id="ticketTable"></div>
+
+        <div class="print-btn" id="print2">
+          <button class="secondary" onclick="printTable('ticketTable')">
+            Print / PDF
+          </button>
+        </div>
+      </div>
+
+      <!-- Report 3: Customer Overview -->
+      <div id="customers" class="section">
+        <h3>Customer Overview</h3>
+
+        <div class="filter-bar">
+          <input type="date" id="from3" />
+          <input type="date" id="to3" />
+          <button onclick="loadReport('customers')">Load</button>
+        </div>
+
+        <div class="msg" id="msg3"></div>
+        <div class="status" id="status3"></div>
+        <div id="customerTable"></div>
+
+        <div class="print-btn" id="print3">
+          <button class="secondary" onclick="printTable('customerTable')">
+            Print / PDF
+          </button>
+        </div>
+      </div>
+
+      <!-- Report 4: Rides Overview -->
+      <div id="rides" class="section">
+        <h3>Rides Overview</h3>
+
+        <div class="filter-bar">
+          <input type="date" id="from4" />
+          <input type="date" id="to4" />
+          <button onclick="loadReport('rides')">Load</button>
+        </div>
+
+        <div class="msg" id="msg4"></div>
+        <div class="status" id="status4"></div>
+        <div id="rideTable"></div>
+
+        <div class="print-btn" id="print4">
+          <button class="secondary" onclick="printTable('rideTable')">
+            Print / PDF
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function showSection(id) {
+        document
+          .querySelectorAll(".section")
+          .forEach((s) => s.classList.remove("active"));
+        document.getElementById(id).classList.add("active");
+        loadReport(id);
+      }
+
+      async function loadReport(type) {
+        const map = {
+          revenue: {
+            url: "/stats/revenue",
+            table: "revenueTable",
+            msg: "msg1",
+            status: "status1",
+            print: "print1",
+            from: "from1",
+            to: "to1",
+          },
+          tickets: {
+            url: "/stats/tickets",
+            table: "ticketTable",
+            msg: "msg2",
+            status: "status2",
+            print: "print2",
+            from: "from2",
+            to: "to2",
+          },
+          customers: {
+            url: "/stats/new-customers",
+            table: "customerTable",
+            msg: "msg3",
+            status: "status3",
+            print: "print3",
+            from: "from3",
+            to: "to3",
+          },
+          rides: {
+            url: "/stats/top-ride",
+            table: "rideTable",
+            msg: "msg4",
+            status: "status4",
+            print: "print4",
+            from: "from4",
+            to: "to4",
+          },
+        };
+
+        const cfg = map[type];
+        const from = document.getElementById(cfg.from).value;
+        const to = document.getElementById(cfg.to).value;
+
+        const msg = document.getElementById(cfg.msg);
+        const status = document.getElementById(cfg.status);
+        const container = document.getElementById(cfg.table);
+
+        msg.textContent = "";
+        msg.className = "msg";
+        status.textContent = "";
+        container.innerHTML = "";
+
+        if (!from || !to || from > to) {
+          msg.className = "msg error";
+          msg.textContent = "Please select a valid date range.";
+          return;
+        }
+
+        status.textContent = "Loading...";
+
+        try {
+          const res = await fetch(`${cfg.url}?from=${from}&to=${to}`);
+          if (!res.ok) throw new Error(await res.text());
+          const data = await res.json();
+
+          if (type === "revenue") {
+            const total = data.reduce(
+              (sum, r) => sum + (r.Total_Revenue || 0),
+              0,
+            );
+            document.getElementById("revenueValue").textContent =
+              "$" + total.toLocaleString("en-US", { minimumFractionDigits: 2 });
+          }
+          if (type === "tickets") {
+            const total = data.reduce(
+              (sum, r) => sum + (r.Tickets_Sold || 0),
+              0,
+            );
+            document.getElementById("ticketsCount").textContent =
+              total.toLocaleString();
+          }
+          if (type === "customers") {
+            document.getElementById("newCustomers").textContent =
+              data.length + " active";
+          }
+          if (type === "rides") {
+            const top = data[0];
+            document.getElementById("topRide").textContent = top
+              ? top.Ride
+              : "--";
+          }
+
+          if (!data.length) {
+            container.innerHTML = "<p>No data found.</p>";
+          } else {
+            buildTable(container, data);
+          }
+
+          document.getElementById(cfg.print).style.display = "block";
+          status.textContent = `Showing results from ${from} to ${to}`;
+        } catch (err) {
+          msg.className = "msg error";
+          msg.textContent = "Error loading data from server.";
+          status.textContent = "";
+        }
+      }
+
+      function buildTable(container, data) {
+        const cols = Object.keys(data[0]);
+        let html = "<table><thead><tr>";
+
+        cols.forEach((c) => (html += `<th>${c.replace(/_/g, " ")}</th>`));
+        html += "</tr></thead><tbody>";
+
+        data.forEach((row) => {
+          html += "<tr>";
+          cols.forEach((c) => {
+            let val = row[c] ?? "";
+            if (
+              typeof val === "number" &&
+              (c.toLowerCase().includes("revenue") ||
+                c.toLowerCase().includes("spent") ||
+                c.toLowerCase().includes("price"))
+            ) {
+              val =
+                "$" + val.toLocaleString("en-US", { minimumFractionDigits: 2 });
+            }
+
+            if (typeof val === "string" && val.match(/^\d{4}-\d{2}-\d{2}T/)) {
+              val = val.split("T")[0];
+            }
+            html += `<td>${val}</td>`;
+          });
+          html += "</tr>";
+        });
+
+        html += "</tbody></table>";
+        container.innerHTML = html;
+      }
+
+      function printTable(id) {
+        const content = document.getElementById(id).innerHTML;
+        const win = window.open("", "", "width=900,height=600");
+        win.document.write(`
+                <html><head><title>Report</title>
+                <style>
+                    body { font-family: Arial; padding: 20px; }
+                    table { width: 100%; border-collapse: collapse; }
+                    th { background: #5f90d8; color: white; padding: 10px; }
+                    td { padding: 8px; border-bottom: 1px solid #ddd; }
+                </style>
+                </head><body>${content}</body></html>
+            `);
+        win.document.close();
+        win.print();
+      }
+
+      window.onload = () => {
+        const today = new Date();
+        const past = new Date();
+        past.setDate(today.getDate() - 30);
+        const format = (d) => d.toISOString().split("T")[0];
+
+        ["from1", "from2", "from3", "from4"].forEach(
+          (id) => (document.getElementById(id).value = format(past)),
+        );
+        ["to1", "to2", "to3", "to4"].forEach(
+          (id) => (document.getElementById(id).value = format(today)),
+        );
+
+        loadReport("revenue");
+        loadReport("tickets");
+        loadReport("customers");
+        loadReport("rides");
+      };
+    </script>
+  </body>
+</html>

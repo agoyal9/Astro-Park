@@ -1,0 +1,232 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Theme Park Login | Create Customer Account</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="create_customer_account.css" />
+  </head>
+  <body>
+    <main class="account-shell">
+      <section class="account-card" aria-labelledby="account-heading">
+        <div class="account-header">
+          <h1 id="account-heading">Create Your Astro Park Account</h1>
+          <p>Join to buy tickets faster, track visits, and manage your profile.</p>
+        </div>
+
+        <form
+          id="create_customer_account_form"
+          class="create-customer-account-form"
+        >
+          <div class="field-grid">
+            <!--first name text box-->
+            <div class="form-field">
+              <label for="first-name">First Name</label>
+              <input
+                type="text"
+                id="first-name"
+                name="first-name"
+                class="first-name-textbox"
+                maxlength="30"
+                placeholder="First name"
+                required
+              />
+            </div>
+
+            <!--middle initial text box-->
+            <div class="form-field">
+              <label for="middle-initial">Middle Initial</label>
+              <input
+                type="text"
+                id="middle-initial"
+                name="middle-initial"
+                class="middle-initial-textbox"
+                maxlength="1"
+                placeholder="M"
+              />
+            </div>
+
+            <!--last name text box-->
+            <div class="form-field">
+              <label for="last-name">Last Name</label>
+              <input
+                type="text"
+                id="last-name"
+                name="last-name"
+                class="last-name-textbox"
+                maxlength="30"
+                placeholder="Last name"
+                required
+              />
+            </div>
+
+            <!--date of birth text box-->
+            <div class="form-field">
+              <label for="date-of-birth">Date of Birth</label>
+              <input
+                type="date"
+                id="date-of-birth"
+                name="date-of-birth"
+                class="date-of-birth-textbox"
+                required
+              />
+            </div>
+
+            <!--phone number box-->
+            <div class="form-field">
+              <label for="phone-number">Phone Number</label>
+              <input
+                type="text"
+                id="phone-number"
+                name="phone-number"
+                class="phone-number"
+                maxlength="10"
+                minlength="10"
+                placeholder="5551234567"
+                required
+              />
+            </div>
+
+            <!--email text box-->
+            <div class="form-field">
+              <label for="email">Email</label>
+              <input
+                type="text"
+                id="email"
+                name="email"
+                class="email-textbox"
+                maxlength="30"
+                placeholder="you@example.com"
+                required
+              />
+            </div>
+
+            <!--password text box-->
+            <div class="form-field">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="password-textbox"
+                minlength="4"
+                maxlength="30"
+                placeholder="Create a password"
+                required
+              />
+            </div>
+
+            <!-- retype password text box-->
+            <div class="form-field">
+              <label for="retype-password">Retype Password</label>
+              <input
+                type="password"
+                id="retype-password"
+                name="retype-password"
+                class="retype-password-textbox"
+                minlength="4"
+                maxlength="30"
+                placeholder="Retype password"
+                required
+              />
+            </div>
+          </div>
+
+          <p id="err-msg" class="error-message"></p>
+
+          <!--create account button-->
+          <div class="actions-row">
+            <button
+              type="button"
+              class="secondary-button"
+              onclick="window.location.href = 'customer_login.html'"
+            >
+              Already have an account?
+            </button>
+            <button
+              type="submit"
+              id="create-account"
+              class="create-account-button"
+            >
+              Create Account
+            </button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <button class="back-button" onclick="window.location.href = 'login.html'">
+      Back
+    </button>
+
+    <script>
+      document
+        .getElementById("create_customer_account_form")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const first_name = document.getElementById("first-name").value.trim();
+          const middle_initial = document
+            .getElementById("middle-initial")
+            .value.trim();
+          const last_name = document.getElementById("last-name").value.trim();
+          const date_of_birth = document.getElementById("date-of-birth").value;
+          const phone_number = document
+            .getElementById("phone-number")
+            .value.replace(/\D/g, "");
+          const email_address = document.getElementById("email").value.trim();
+          const password = document.getElementById("password").value.trim();
+          const retype_password = document
+            .getElementById("retype-password")
+            .value.trim();
+          const errMsg = document.getElementById("err-msg");
+
+          errMsg.style.display = "none";
+          errMsg.textContent = "";
+
+          if (password !== retype_password) {
+            errMsg.style.display = "block";
+            errMsg.textContent = "Passwords do not match.";
+            return;
+          }
+
+          if (phone_number.length !== 10) {
+            errMsg.style.display = "block";
+            errMsg.textContent = "Phone number must be exactly 10 digits.";
+            return;
+          }
+
+          try {
+            const response = await fetch("/create_customer_account", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                first_name,
+                middle_initial,
+                last_name,
+                date_of_birth,
+                phone_number,
+                email_address,
+                password,
+                retype_password,
+              }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+              window.location.href = data.redirect;
+            } else {
+              errMsg.style.display = "block";
+              errMsg.textContent = data.message || "Unable to create account.";
+            }
+          } catch (err) {
+            errMsg.style.display = "block";
+            errMsg.textContent = "Server error. Please try again later.";
+          }
+        });
+    </script>
+  </body>
+</html>

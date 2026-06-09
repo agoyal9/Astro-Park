@@ -1,0 +1,138 @@
+@import url('login.css');
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 100vh;
+  padding: 80px 20px 40px;
+}
+
+h1 {
+  text-align: center;
+  margin: 0 0 20px 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--white);
+  background: linear-gradient(90deg, var(--cyan), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.toolbar {
+  width: 90%;
+  margin: 0 auto 14px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.toolbar label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.toggle-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.toggle-label input[type="checkbox"] {
+  accent-color: var(--cyan);
+}
+
+.toolbar select {
+  border: 1px solid var(--input-border);
+  border-radius: 10px;
+  padding: 7px 12px;
+  background: var(--input-bg);
+  font-size: 14px;
+  color: var(--white);
+  width: auto;
+}
+
+.table-container {
+  width: 90%;
+  margin: 0 auto;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+th {
+  background: rgba(56, 217, 245, 0.08);
+  color: var(--cyan);
+  text-align: left;
+  padding: 12px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(56, 217, 245, 0.2);
+}
+
+td {
+  padding: 12px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 14px;
+  color: var(--white);
+}
+
+tr:hover {
+  background: rgba(56, 217, 245, 0.04);
+}
+
+th:first-child {
+  border-top-left-radius: 10px;
+}
+th:last-child {
+  border-top-right-radius: 10px;
+}
+
+th {
+  position: sticky;
+  top: 0;
+}
+
+td,
+th {
+  padding-left: 18px;
+  padding-right: 18px;
+}
+
+.back-button {
+  width: fit-content;
+  height: auto;
+  padding: 8px 16px;
+  top: 14px;
+  left: 14px;
+  z-index: 200;
+  font-size: 13px;
+  position: fixed;
+}
+
+button {
+  width: auto;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .toolbar { width: 98%; }
+  .table-container { width: 98%; }
+}

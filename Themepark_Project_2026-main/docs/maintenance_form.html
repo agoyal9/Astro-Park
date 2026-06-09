@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Maintenance Form</title>
+    <link rel="stylesheet" href="maintenance_form.css" />
+  </head>
+  <body>
+    <button
+      class="back-button"
+      onclick="window.location.href = 'maintenance_portal.html'"
+    >
+      Back
+    </button>
+
+    <div class="maintenance-card">
+      <h1>Create Maintenance</h1>
+      <form method="POST" action="/submit-maintenance" id="maintenance_form">
+        <input type="hidden" name="employee_id" id="employee_id" />
+        <div class="maintenance-details">
+          <div class="selects">
+            <div class="select-label-group">
+              <label for="which-ride">Ride:</label>
+              <select name="ride" id="which-ride" required>
+                <option value="" disabled selected>Loading rides...</option>
+              </select>
+            </div>
+            <div class="select-label-group">
+              <label for="maintenance-type">Maintenance Type:</label>
+              <select name="maintenance-type" id="maintenance-type" required>
+                <option value="routine">Routine</option>
+                <option value="monthly deep-dive">Monthly Deep-Dive</option>
+                <option value="emergency stop">Emergency Stop</option>
+                <option value="ride-breakdown">Ride-breakdown</option>
+                <option value="multiple-complaints">Multiple Complaints</option>
+              </select>
+            </div>
+            <div class="select-label-group">
+              <label for="priority">Priority:</label>
+              <select id="priority" name="priority" required>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+              </select>
+            </div>
+            <div class="select-label-group">
+              <label for="status">Status:</label>
+              <select id="status" name="status" required>
+                <option value="open">Open</option>
+                <option value="in-progress">In Progress</option>
+                <option value="resolved">Resolved</option>
+              </select>
+            </div>
+          </div>
+          <div class="date-select">
+            <label for="date-opened">Date:</label>
+            <input
+              type="datetime-local"
+              id="date-opened"
+              name="date-opened"
+              required
+            />
+          </div>
+        </div>
+        <textarea
+          name="description"
+          id="description"
+          placeholder="Description of maintenance..."
+          required
+        ></textarea>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+    <script src="maintenance_form.js"></script>
+  </body>
+</html>

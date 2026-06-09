@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Employee Gift Shop</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="giftshop.css" />
+  </head>
+
+  <body>
+    <div id="low-stock-alerts" class="alert-stack" aria-live="polite"></div>
+
+    <button
+      class="back-button"
+      type="button"
+      id="back-btn"
+      onclick="window.location.href = 'employee.html'"
+    >
+      Back
+    </button>
+
+    <main class="layout">
+      <section class="panel form-panel">
+        <h2>Add Product</h2>
+        <form id="add-product-form" class="form-grid">
+          <label for="product-name">Product Name</label>
+          <input
+            id="product-name"
+            name="product-name"
+            type="text"
+            maxlength="100"
+            placeholder="product name"
+            required
+          />
+
+          <label for="product-price">Price</label>
+          <input
+            id="product-price"
+            name="product-price"
+            type="number"
+            min="0.01"
+            step="0.01"
+            placeholder="19.99"
+            required
+          />
+
+          <label for="product-stock">Stock</label>
+          <input
+            id="product-stock"
+            name="product-stock"
+            type="number"
+            min="0"
+            step="1"
+            placeholder="25"
+            required
+          />
+
+          <div class="form-actions">
+            <button class="btn" type="submit">Add Item</button>
+            <button class="btn ghost" type="button" id="clear-btn">
+              Clear
+            </button>
+          </div>
+        </form>
+        <p id="form-msg" class="msg"></p>
+      </section>
+
+      <section class="panel table-panel">
+        <div class="table-toolbar">
+          <h2>Inventory List</h2>
+          <div class="toolbar-actions">
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Search product name"
+            />
+            <button class="btn ghost" type="button" id="refresh-btn">
+              Refresh
+            </button>
+          </div>
+        </div>
+
+        <p id="table-msg" class="msg"></p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="inventory-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="giftshop.js"></script>
+  </body>
+</html>

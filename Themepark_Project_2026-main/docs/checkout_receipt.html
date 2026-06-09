@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Astro Park | Receipt</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="checkout_receipt.css" />
+  </head>
+  <body>
+    <button
+      class="back-button"
+      type="button"
+      onclick="window.location.href = 'customer.html'"
+    >
+      Back to Customer Home
+    </button>
+
+    <main class="receipt-shell">
+      <section class="receipt-card" aria-labelledby="receipt-heading">
+        <header class="receipt-header">
+          <h1 id="receipt-heading">Checkout Receipt</h1>
+          <p id="receipt-time">Receipt date: -</p>
+        </header>
+
+        <section class="receipt-section" id="ticket-section">
+          <h2>Tickets</h2>
+          <ul id="ticket-items" class="receipt-list"></ul>
+          <p class="subtotal-line">
+            Ticket Subtotal: $<span id="ticket-subtotal">0.00</span>
+          </p>
+        </section>
+
+        <section class="receipt-section" id="gift-section">
+          <h2>Gift Shop</h2>
+          <ul id="gift-items" class="receipt-list"></ul>
+          <p class="subtotal-line">
+            Gift Shop Subtotal: $<span id="gift-subtotal">0.00</span>
+          </p>
+        </section>
+
+        <footer class="receipt-footer">
+          <p class="grand-total">
+            Grand Total: $<span id="grand-total">0.00</span>
+          </p>
+        </footer>
+      </section>
+    </main>
+
+    <script src="checkout_receipt.js"></script>
+  </body>
+</html>
