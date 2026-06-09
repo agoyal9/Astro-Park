@@ -1,7 +1,7 @@
 {
-  "name": "themepark_project_2026",
+  "name": "Asto-Park",
   "version": "1.0.0",
-  "description": "",
+  "description": "Full-stack theme park management system",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BFNValley/Themepark_Project_2026.git"
+    "url": "git+https://github.com/agoyal9/Astro-Park.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Ashmi Goyal",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/BFNValley/Themepark_Project_2026/issues"
+    "url": "https://github.com/agoyal9/Astro-Park/issues"
   },
-  "homepage": "https://github.com/BFNValley/Themepark_Project_2026#readme",
+  "homepage": "https://github.com/agoyal9/Astro-Park#readme",
   "dependencies": {
     "express": "^5.2.1",
     "mssql": "^12.2.0"
