@@ -1,3 +1,4 @@
+require('dotenv').config();
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
@@ -6,7 +7,7 @@ const sql = require("mssql");
 
 const port = process.env.PORT || 4000;
 
-const requiredDbEnv = ["DB_USER", "DB_PASS", "DB_SERVER", "DB_NAME"];
+const requiredDbEnv = ["DB_SERVER", "DB_NAME"];
 const missingDbEnv = requiredDbEnv.filter((key) => !process.env[key]);
 
 if (missingDbEnv.length > 0) {
@@ -17,11 +18,12 @@ if (missingDbEnv.length > 0) {
 }
 
 const config = {
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
   server: process.env.DB_SERVER,
   database: process.env.DB_NAME,
-  options: { encrypt: true },
+  options: {
+    trustServerCertificate: true,
+    trustedConnection: true,
+  },
 };
 
 let connectionPromise = null;
